@@ -36,14 +36,14 @@ console.log(data);
     Plotly.newPlot("bar", barChart);
 
     // Add metadata for selectedName to #sample-metadata element
-    let nameMetadata = data.metadata.filter(metadta => metadta.id === selectedName[0]);
-    d3.select("#sample-metadata").html(""); // clear contents of html element
-    Object.entries(nameMetadata).forEach(([Key, value]) => { // loop through key-value pairs and append "p" element for each
+    let nameMetadata = data.metadata.find(metadta => metadta.id == selectedName);
+    d3.select("#sample-metadata").html(""); // Clear contents of html element
+    for (let key in nameMetadata) { // Loop through key-value pairs and append "p" element for each
       d3.select("#sample-metadata")
       .append("p")
-      .text(`${key}: ${value}`);
-    });
-    
+      .text(`${key}: ${nameMetadata[key]}`);
+}
+
   }  
 
   // Call getData() when a change takes place to the DOM
