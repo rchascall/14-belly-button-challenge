@@ -34,6 +34,15 @@ console.log(data);
     }];
 
     Plotly.newPlot("bar", barChart);
+
+    // Add metadata for selectedName to #sample-metadata element
+    let nameMetadata = data.metadata.filter(metadta => metadta.id === selectedName[0]);
+    d3.select("#sample-metadata").html(""); // clear contents of html element
+    Object.entries(nameMetadata).forEach(([Key, value]) => { // loop through key-value pairs and append "p" element for each
+      d3.select("#sample-metadata")
+      .append("p")
+      .text(`${key}: ${value}`);
+    });
     
   }  
 
