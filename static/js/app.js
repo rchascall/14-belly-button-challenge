@@ -20,9 +20,10 @@ console.log(data);
 
   // Create Function called by DOM changes
   function getData(selectedName) {
-
+    
     // Filter for selected name
     let nameData = data.samples.filter(sample => sample.id === selectedName)[0];
+    console.log(nameData);
 
     // Update bar chart
     let barChart = [{
@@ -35,6 +36,25 @@ console.log(data);
 
     Plotly.newPlot("bar", barChart);
 
+    // Update bubble chart  
+    let bubbleTrace = {
+      x: nameData.otu_ids,
+      y: nameData.sample_values,
+      mode: "markers",
+      marker: {
+        size: nameData.sample_values,
+        color: nameData.otu_ids,
+      },
+        text: nameData.otu_labels,
+    };
+    let bubbleData = [bubbleTrace];
+
+    let bubbleLayout = {
+      xaxis: {title: "OTU ID"},
+    };
+
+    Plotly.newPlot("bubble", bubbleData, bubbleLayout);
+
     // Add metadata for selectedName to #sample-metadata element
     let nameMetadata = data.metadata.find(metadta => metadta.id == selectedName);
     d3.select("#sample-metadata").html(""); // Clear contents of html element
@@ -43,9 +63,7 @@ console.log(data);
       .append("p")
       .text(`${key}: ${nameMetadata[key]}`);
 }
-
   }  
-
   // Call getData() when a change takes place to the DOM
   d3.select("#selDataset").on("change", function() {
     let selectedName = d3.select(this).property("value");
